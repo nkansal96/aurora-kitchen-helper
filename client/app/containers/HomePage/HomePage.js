@@ -4,24 +4,34 @@
  * This is the first thing users see of our App, at the '/' route
  */
 
-import React from "react";
-import PropTypes from "prop-types";
-import { Helmet } from "react-helmet";
-import "./style.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 export default class HomePage extends React.PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
-    this.state = { time: Date.now() };
+    this.state = {
+      intervalId: setInterval(this.fetchJSON, 1000)
+    };
   }
 
-  componentDidMount() {
-    this.interval = setInterval(() => this.setState({ time: Date.now() }), 100);
+  fetchJSON() {
+    fetch('/file.json')
+      .then(res => res.json())
+      .then(json => {
+        alert(JSON.stringify(json, null, 2))
+        this.setState({
+          activatedAppliances: json.appliances,
+          timeLeftOnTimer: json.timeLeftOnTimer,
+          currentSong: json.currentSong,
+        })
+      })
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    clearInterval(this.state.intervalId);
   }
 
   render() {
@@ -36,34 +46,38 @@ export default class HomePage extends React.PureComponent {
       <article>
         <Helmet>
           <title>Home Page</title>
-          <meta name="description" content="Kitchen Helper App" />
+          <meta name='description' content='Kitchen Helper App' />
         </Helmet>
-        <div className="home-page">
-          <section className="centered">
-            <h1>Kitchen Helper App</h1>
-          </section>
+        <div>
           <div> {this.state.time} </div>
-          <section className="inner-section">
-            <h2>Timer</h2>
-            <p>
-              Chicken &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
-              &emsp; &emsp; &emsp; &emsp; 10:43 Remaining
-            </p>
-            <p>
-              Veggies &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
-              &emsp; &emsp; &emsp; &emsp; 5:12 Remaining
-            </p>
+          <section className="card mt-1">
+            <div className="card-body">
+              <h3 className="card-title">Timer</h3>
+              <p className="card-text">
+                Chicken &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+                &emsp; &emsp; &emsp; &emsp; 10:43 Remaining
+                <br />
+                Veggies &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+                &emsp; &emsp; &emsp; &emsp; 5:12 Remaining
+              </p>
+            </div>
           </section>
-          <section className="inner-section">
-            <h2>Audio</h2>
-            <p> Now Playing: Cooking with Winter Vegatbles</p>
+          <section className='card mt-4'>
+            <div className="card-body">
+              <h3 className="card-title">Audio</h3>
+              <p className="card-text">
+                Now Playing: Cooking with Winter Vegatbles
+              </p>
+            </div>
           </section>
-          <section className="inner-section">
-            <h2>Appliances</h2>
-            <p>
-              Oven &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
-              &emsp; &emsp; &emsp; &emsp; On
-            </p>
+          <section className='card mt-4'>
+            <div className="card-body">
+              <h3 className="card-title">Appliances</h3>
+              <p className="card-text">
+                Oven &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
+                &emsp; &emsp; &emsp; &emsp; On
+              </p>
+            </div>
           </section>
         </div>
       </article>

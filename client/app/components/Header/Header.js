@@ -1,18 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
-import Banner from "./images/banner.jpg";
-import "./style.scss";
-
-class Header extends React.Component {
-  // eslint-disable-line react/prefer-stateless-function
-  render() {
-    return (
-      <div className="header">
-        {/* <img src={Banner} alt="react-redux-boilerplate - Logo" /> */}
-      </div>
-    );
-  }
-}
+const Header = () =>
+  <nav className="navbar navbar-expand-md navbar-light">
+    <a className="navbar-brand" href="/">Kitchen Helper App</a>
+  </nav>
 
 export default Header;

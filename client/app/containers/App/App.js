@@ -14,10 +14,9 @@ import HomePage from "containers/HomePage/Loadable";
 import NotFoundPage from "containers/NotFoundPage/Loadable";
 import Header from "components/Header";
 import Footer from "components/Footer";
-import "./style.scss";
 
 const App = () => (
-  <div className="app-wrapper">
+  <div className="container">
     <Helmet
       titleTemplate="%s - Kitchen Helper App"
       defaultTitle="Kitchen Helper App"
