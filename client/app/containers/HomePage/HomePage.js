@@ -11,13 +11,17 @@ import "./style.scss";
 
 export default class HomePage extends React.PureComponent {
   // eslint-disable-line react/prefer-stateless-function
-  /**
-   * when initial state username is not null, submit the form to load repos
-   */
+  constructor(props) {
+    super(props);
+    this.state = { time: Date.now() };
+  }
+
   componentDidMount() {
-    if (this.props.username && this.props.username.trim().length > 0) {
-      this.props.onSubmitForm();
-    }
+    this.interval = setInterval(() => this.setState({ time: Date.now() }), 100);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {
@@ -38,6 +42,7 @@ export default class HomePage extends React.PureComponent {
           <section className="centered">
             <h1>Kitchen Helper App</h1>
           </section>
+          <div> {this.state.time} </div>
           <section className="inner-section">
             <h2>Timer</h2>
             <p>
@@ -68,9 +73,5 @@ export default class HomePage extends React.PureComponent {
 
 HomePage.propTypes = {
   loading: PropTypes.bool,
-  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-  repos: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  onSubmitForm: PropTypes.func,
-  username: PropTypes.string,
-  onChangeUsername: PropTypes.func
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool])
 };
