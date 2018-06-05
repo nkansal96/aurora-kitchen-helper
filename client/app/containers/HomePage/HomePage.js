@@ -17,39 +17,31 @@ export default class HomePage extends React.PureComponent {
     };
   }
 
+  componentWillUnmount() {
+    clearInterval(this.state.intervalId);
+  }
+
   fetchJSON() {
     fetch('/file.json')
       .then(res => res.json())
-      .then(json => {
+      .then((json) => {
         alert(JSON.stringify(json, null, 2))
         this.setState({
           activatedAppliances: json.appliances,
           timeLeftOnTimer: json.timeLeftOnTimer,
           currentSong: json.currentSong,
-        })
-      })
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.state.intervalId);
+        });
+      });
   }
 
   render() {
-    const { loading, error, repos } = this.props;
-    const reposListProps = {
-      loading,
-      error,
-      repos
-    };
-
     return (
       <article>
         <Helmet>
           <title>Home Page</title>
-          <meta name='description' content='Kitchen Helper App' />
+          <meta name="description" content="Kitchen Helper App" />
         </Helmet>
         <div>
-          <div> {this.state.time} </div>
           <section className="card mt-1">
             <div className="card-body">
               <h3 className="card-title">Timer</h3>
@@ -62,7 +54,7 @@ export default class HomePage extends React.PureComponent {
               </p>
             </div>
           </section>
-          <section className='card mt-4'>
+          <section className="card mt-4">
             <div className="card-body">
               <h3 className="card-title">Audio</h3>
               <p className="card-text">
@@ -70,7 +62,7 @@ export default class HomePage extends React.PureComponent {
               </p>
             </div>
           </section>
-          <section className='card mt-4'>
+          <section className="card mt-4">
             <div className="card-body">
               <h3 className="card-title">Appliances</h3>
               <p className="card-text">
@@ -86,6 +78,4 @@ export default class HomePage extends React.PureComponent {
 }
 
 HomePage.propTypes = {
-  loading: PropTypes.bool,
-  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool])
 };

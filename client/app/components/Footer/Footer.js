@@ -1,8 +1,12 @@
-import React from "react";
+import React from 'react';
 
 const Footer = () => (
   <footer className="mt-4">
-    Made with ❤️ by Dr. Eggman's A Team
+    Made with
+    <span role="img" aria-label="heart">
+      ❤️
+    </span>
+    by Dr. Eggman&#39;s A Team
   </footer>
 );
 
