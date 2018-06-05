@@ -15,6 +15,10 @@ export default class HomePage extends React.PureComponent {
     this.state = {
       intervalId: setInterval(this.fetchJSON, 1000)
     };
+
+    // Use this to play audio
+    // var audio = new Audio('https://jamesbvaughan.com/song.mp3');
+    // audio.play();
   }
 
   componentWillUnmount() {

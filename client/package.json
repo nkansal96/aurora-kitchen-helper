@@ -1,7 +1,7 @@
 {
-  "name": "Kitchen Helper App",
+  "name": "kithcen-helper-client",
   "version": "1.0.0",
-  "description": "A proof-of-concept app for the Aurora API",
+  "description": "CS 130 Project",
   "repository": {
     "type": "git",
     "url": "git://github.com/nkansal96/aurora-kitchen-helper.git"
@@ -10,7 +10,7 @@
     "npm": ">=3",
     "node": ">=5"
   },
-  "author": "Dinesh Pandiyan",
+  "author": "Dr. Eggman's A Team",
   "license": "MIT",
   "scripts": {
     "prebuild": "npm run build:clean",

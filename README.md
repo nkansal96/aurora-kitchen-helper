@@ -13,5 +13,7 @@ npm start
 
 cd server
 
+pip install -Ur requirments.txt
+
 python3 server.py
 
