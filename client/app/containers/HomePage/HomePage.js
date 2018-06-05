@@ -18,6 +18,10 @@ export default class HomePage extends React.PureComponent {
 
   componentDidMount() {
     this.interval = setInterval(() => this.setState({ time: Date.now() }), 100);
+    
+    // Use this to play audio 
+    // var audio = new Audio('https://jamesbvaughan.com/song.mp3');
+    // audio.play();
   }
 
   componentWillUnmount() {
