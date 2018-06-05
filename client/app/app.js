@@ -23,7 +23,8 @@ import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 /* eslint-enable import/no-webpack-loader-syntax */
 
 import 'bootstrap';
-import 'styles/global-styles.scss';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'styles/global-styles.css';
 
 const history = createHistory();
 const MOUNT_NODE = document.getElementById('app');

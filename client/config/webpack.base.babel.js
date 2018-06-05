@@ -29,19 +29,11 @@ module.exports = options => ({
         },
       },
       {
-        // Preprocess our own .scss files
-        test: /\.scss$/,
-        exclude: /node_modules/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-      },
-      {
-        // Preprocess 3rd party .css files located in node_modules
         test: /\.css$/,
-        include: /node_modules/,
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(eot|svg|otf|ttf|woff|woff2)$/,
+        test: /\.(eot|svg|otf|ttf|woff|woff2|mp3)$/,
         use: 'file-loader',
       },
       {
@@ -74,19 +66,6 @@ module.exports = options => ({
         test: /\.html$/,
         use: 'html-loader'
       },
-      {
-        test: /\.json$/,
-        use: 'json-loader'
-      },
-      {
-        test: /\.(mp4|webm)$/,
-        use: {
-          loader: 'url-loader',
-          options: {
-            limit: 10000
-          },
-        },
-      },
     ],
   },
   plugins: options.plugins.concat([
@@ -109,7 +88,6 @@ module.exports = options => ({
     extensions: [
       '.js',
       '.jsx',
-      '.scss',
       '.react.js'
     ],
     mainFields: [
