@@ -1,16 +1,12 @@
 {
-  "name": "react-redux-boilerplate",
+  "name": "Kithcen Helper Client",
   "version": "1.0.0",
-  "description": "A minimal react-redux boilerplate with all the best practices",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/flexdinesh/react-redux-boilerplate.git"
-  },
+  "description": "CS 130 Project",
   "engines": {
     "npm": ">=3",
     "node": ">=5"
   },
-  "author": "Dinesh Pandiyan",
+  "author": "Dr. Eggman's A Team",
   "license": "MIT",
   "scripts": {
     "prebuild": "npm run build:clean",
