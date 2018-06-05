@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
 export default class HomePage extends React.PureComponent {
@@ -29,7 +29,7 @@ export default class HomePage extends React.PureComponent {
     fetch('/file.json')
       .then(res => res.json())
       .then((json) => {
-        alert(JSON.stringify(json, null, 2))
+        alert(JSON.stringify(json, null, 2));
         this.setState({
           activatedAppliances: json.appliances,
           timeLeftOnTimer: json.timeLeftOnTimer,
