@@ -13,8 +13,5 @@ npm start
 
 cd server
 
-pip install -Ur requirements.txt
+python3 server.py
 
-./manage.py migrate
-
-./manage.py runserver

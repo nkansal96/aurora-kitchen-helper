@@ -15,7 +15,7 @@ if __name__ == '__main__':
 		'Appliance': {}
 	}
 
-	for speech in continuously_listen(silence_len=0.2):
+	for speech in continuously_listen(silence_len=1):
 		try:
 			i = speech.text().interpret()
 			print('LISTENING')
