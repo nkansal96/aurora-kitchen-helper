@@ -29,12 +29,13 @@ export default class HomePage extends React.PureComponent {
     fetch('/file.json')
       .then(res => res.json())
       .then((json) => {
-        alert(JSON.stringify(json, null, 2));
+        // alert(JSON.stringify(json, null, 2));
         this.setState({
-          activatedAppliances: json.appliances,
-          timeLeftOnTimer: json.timeLeftOnTimer,
-          currentSong: json.currentSong,
+          // activatedAppliances: json.appliances,
+          // timeLeftOnTimer: json.timeLeftOnTimer,
+          // currentSong: json.currentSong,
         });
+        return json;
       });
   }
 
