@@ -12,8 +12,14 @@ export default class HomePage extends React.PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
+
+    this.fetchJSON = this.fetchJSON.bind(this);
+
     this.state = {
-      intervalId: setInterval(this.fetchJSON, 1000)
+      intervalId: setInterval(this.fetchJSON, 1000),
+      activatedAppliances: [],
+      timeLeftOnTimer: null,
+      currentSong: null,
     };
 
     // Use this to play audio
@@ -26,16 +32,14 @@ export default class HomePage extends React.PureComponent {
   }
 
   fetchJSON() {
-    fetch('/file.json')
+    fetch('/data')
       .then(res => res.json())
       .then((json) => {
-        // alert(JSON.stringify(json, null, 2));
         this.setState({
-          // activatedAppliances: json.appliances,
-          // timeLeftOnTimer: json.timeLeftOnTimer,
-          // currentSong: json.currentSong,
+          activatedAppliances: Object.keys(json.Appliance),
+          timeLeftOnTimer: `${json.Timers.duration} remaining`,
+          currentSong: json.Audio.song,
         });
-        return json;
       });
   }
 
@@ -51,11 +55,10 @@ export default class HomePage extends React.PureComponent {
             <div className="card-body">
               <h3 className="card-title">Timer</h3>
               <p className="card-text">
-                Chicken &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
-                &emsp; &emsp; &emsp; &emsp; 10:43 Remaining
-                <br />
-                Veggies &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
-                &emsp; &emsp; &emsp; &emsp; 5:12 Remaining
+                {this.state.timeLeftOnTimer
+                  ? this.state.timeLeftOnTimer
+                  : 'No timer currently set.'
+                }
               </p>
             </div>
           </section>
@@ -63,17 +66,21 @@ export default class HomePage extends React.PureComponent {
             <div className="card-body">
               <h3 className="card-title">Audio</h3>
               <p className="card-text">
-                Now Playing: Cooking with Winter Vegatbles
+                {this.state.currentSong
+                  ? `Now Playing: ${this.state.currentSong}`
+                  : 'No song currently playing.'
+                }
               </p>
             </div>
           </section>
           <section className="card mt-4">
             <div className="card-body">
-              <h3 className="card-title">Appliances</h3>
-              <p className="card-text">
-                Oven &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
-                &emsp; &emsp; &emsp; &emsp; On
-              </p>
+              <h3 className="card-title">Active Appliances</h3>
+              <div className="card-text">
+                {this.state.activatedAppliances.map(appliance =>
+                  <div key={appliance}>{appliance}</div>
+                )}
+              </div>
             </div>
           </section>
         </div>
