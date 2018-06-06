@@ -18,7 +18,7 @@ export default class HomePage extends React.PureComponent {
     this.state = {
       intervalId: setInterval(this.fetchJSON, 1000),
       activatedAppliances: [],
-      timeLeftOnTimer: null,
+      minutesLeftOnTimer: null,
       currentSong: null,
     };
 
@@ -37,7 +37,7 @@ export default class HomePage extends React.PureComponent {
       .then((json) => {
         this.setState({
           activatedAppliances: Object.keys(json.Appliance),
-          timeLeftOnTimer: `${json.Timers.duration} remaining`,
+          minutesLeftOnTimer: json.Timers.duration,
           currentSong: json.Audio.song,
         });
       });
@@ -55,8 +55,8 @@ export default class HomePage extends React.PureComponent {
             <div className="card-body">
               <h3 className="card-title">Timer</h3>
               <p className="card-text">
-                {this.state.timeLeftOnTimer
-                  ? this.state.timeLeftOnTimer
+                {this.state.minutesLeftOnTimer
+                  ? `${this.state.minutesLeftOnTimer} Minutes Remaining`
                   : 'No timer currently set.'
                 }
               </p>
