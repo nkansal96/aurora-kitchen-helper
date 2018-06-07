@@ -1,64 +1,64 @@
-import json
-
-import auroraapi as aurora
 from auroraapi.speech import continuously_listen
+import auroraapi as aurora
+import json
 import requests
 
+aurora.config.app_id = "2907c5b01511489d6a56e306f8e1a544"
+aurora.config.app_token = "TwFsznHlJL8Do1VnZxbTTi072yHqvVs"
 
-if __name__ == '__main__':
-    aurora.config.app_id    = "2907c5b01511489d6a56e306f8e1a544"
-    aurora.config.app_token = "TwFsznHlJL8Do1VnZxbTTi072yHqvVs"
+data = {
+    'minutesLeftOnTimer': None,
+    'currentSong': None,
+    'activatedAppliances': [],
+}
 
-    data = {
-        'Timer': {},
-        'Audio': {},
-        'Appliance': {}
-    }
+timer_dict = {
+    'one minute': 1,
+    'two minutes': 2,
+    'three minutes': 3,
+    'four minutes': 4,
+    'five minutes': 5,
+    'six minutes': 6,
+    'seven minutes': 7,
+    'eight minutes': 8,
+    'nine minutes': 9,
+    '20 minutes': 20,
+    'one hour': 60,
+}
 
-    timer_dict = {
-        'one minute': 1,
-        'two minutes': 2,
-        'three minutes': 3,
-        'four minutes': 4,
-        'five minutes': 5,
-        'six minutes': 6,
-        'seven minutes': 7,
-        'eight minutes': 8,
-        'nine minutes': 9,
-        '20 minutes': 20,
-        'one hour': 60,
-    }
 
-    for speech in continuously_listen(silence_len=.5):
-        try:
-            i = speech.text().interpret()
-            print('LISTENING')
-            print()
+def handleSetTimer(entities):
+    time_left = entities['duration']
+    if time_left in timer_dict:
+        data['minutesLeftOnTimer'] = timer_dict[time_left]
 
-            if i.intent == "set_timer":
-                print('SETTING TIMER')
-                print(i.entities)
-                if i.entities['duration'] in timer_dict:
-                    data['Timer']['duration'] = timer_dict[i.entities['duration']]
-                print()
-            elif i.intent == "play_song":
-                print('PLAYING SONG')
-                print(i.entities)
-                data['Audio']['song'] = i.entities['song']
-                print()
-            elif i.intent == "turn_on":
-                print('TURNING ON')
-                print(i.entities)
-                data['Appliance'][i.entities['object']] = 'ON'
-                print()
-            else:
-                print('OTHER')
-                print(speech.text().text)
-                print()
 
-            r = requests.post('http://127.0.0.1:3000/updateData', data)
-            if r.status_code != 200:
-                print('Error posting data ({})'.format(r.status_code))
-        except:
-            pass
+def handlePlaySong(entities):
+    data['currentSong'] = i.entities['song']
+
+
+def handleTurnOnAppliance(entities):
+    data['activatedAppliances'].append(i.entities['object'])
+
+
+for speech in continuously_listen(silence_len=.5):
+    print('LISTENING')
+
+    try:
+        i = speech.text().interpret()
+        print('Got Intent: "{}"'.format(i.intent))
+        print(i.entities)
+
+        {
+            'set_timer': handleSetTimer,
+            'play_song': handlePlaySong,
+            'turn_on': handleTurnOnAppliance,
+        }.get(i.intent, lambda: None)(i.entities)
+
+        r = requests.post('http://localhost:3000/update-data', json=data)
+
+        if r.status_code != 200:
+            print('Error posting data ({})'.format(r.status_code))
+    except:
+        pass
 
