@@ -9,23 +9,16 @@ const { resolve } = require('path');
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 const state = {
-  data: {
-    Appliance: {
-    },
-    Timers: {
-      duration: null,
-    },
-    Audio: {
-      song: null,
-    },
-  },
+  activatedAppliances: [],
+  minutesLeftOnTimer: null,
+  currentSong: null,
 };
 
-app.post('/updateData', (req, res) => {
-  state.data = req.data;
+app.post('/update-data', (req, res) => {
+  state.data = req.body;
   res.end();
 });
 

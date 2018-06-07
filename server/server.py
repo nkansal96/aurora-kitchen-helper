@@ -1,6 +1,5 @@
 from auroraapi.speech import continuously_listen
 import auroraapi as aurora
-import json
 import requests
 
 aurora.config.app_id = "2907c5b01511489d6a56e306f8e1a544"
@@ -34,31 +33,33 @@ def handleSetTimer(entities):
 
 
 def handlePlaySong(entities):
-    data['currentSong'] = i.entities['song']
+    data['currentSong'] = entities['song']
 
 
 def handleTurnOnAppliance(entities):
-    data['activatedAppliances'].append(i.entities['object'])
+    data['activatedAppliances'].append(entities['object'])
+
+
+def handleInterpretedSpeech(interpretation):
+    print('Got Intent: "{}"'.format(interpretation.intent))
+    print(interpretation.entities)
+
+    {
+        'set_timer': handleSetTimer,
+        'play_song': handlePlaySong,
+        'turn_on': handleTurnOnAppliance,
+    }.get(interpretation.intent, lambda: None)(interpretation.entities)
+
+    r = requests.post('http://localhost:3000/update-data', json=data)
+
+    if r.status_code != 200:
+        print('Error posting data ({})'.format(r.status_code))
 
 
 for speech in continuously_listen(silence_len=.5):
     print('LISTENING')
-
     try:
-        i = speech.text().interpret()
-        print('Got Intent: "{}"'.format(i.intent))
-        print(i.entities)
-
-        {
-            'set_timer': handleSetTimer,
-            'play_song': handlePlaySong,
-            'turn_on': handleTurnOnAppliance,
-        }.get(i.intent, lambda: None)(i.entities)
-
-        r = requests.post('http://localhost:3000/update-data', json=data)
-
-        if r.status_code != 200:
-            print('Error posting data ({})'.format(r.status_code))
+        interpretation = speech.text().interpret()
+        handleInterpretedSpeech(interpretation)
     except:
         pass
-

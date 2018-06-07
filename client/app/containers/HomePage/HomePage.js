@@ -34,11 +34,11 @@ export default class HomePage extends React.PureComponent {
   fetchJSON() {
     fetch('/data')
       .then(res => res.json())
-      .then((json) => {
+      .then((data) => {
         this.setState({
-          activatedAppliances: Object.keys(json.Appliance),
-          minutesLeftOnTimer: json.Timers.duration,
-          currentSong: json.Audio.song,
+          activatedAppliances: data.activatedAppliances,
+          minutesLeftOnTimer: data.minutesLeftOnTimer,
+          currentSong: data.currentSong,
         });
       });
   }
