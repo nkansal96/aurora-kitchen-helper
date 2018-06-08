@@ -40,20 +40,13 @@ export default class HomePage extends React.PureComponent {
               console.log(this.state.playingSong)
 
               if (this.state.currentSong === "cooking audio" && !this.state.playingSong) {
+                this.setState({playingSong: true});
                 let audio = new Audio('https://jamesbvaughan.com/song.mp3');
                 audio.play();
-                this.setState({playingSong: true});
               }
           }
         );
       });
-
-    console.log(this.state.currentSong)
-    if (this.state.currentSong === "cooking audio") {
-      var audio = new Audio('https://jamesbvaughan.com/song.mp3');
-      audio.play();
-    } 
-
   }
 
   render() {
