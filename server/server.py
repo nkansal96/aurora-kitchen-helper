@@ -65,12 +65,15 @@ def handle_interpreted_speech(interpretation, data, post_data=post_data):
 def main():
     data = initial_data
 
-    for speech in continuously_listen(silence_len=.5):
+    for speech in continuously_listen(silence_len=.5, length=2.2):
         print('Listening...')
         try:
+            print('Recieved speech')
+            print(speech.text().text)
             interpretation = speech.text().interpret()
             handle_interpreted_speech(interpretation, data)
-        except:
+        except Exception as e:
+            print(e)
             pass
 
 

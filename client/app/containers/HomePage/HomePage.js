@@ -9,7 +9,6 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 export default class HomePage extends React.PureComponent {
-  // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
 
@@ -20,11 +19,8 @@ export default class HomePage extends React.PureComponent {
       activatedAppliances: [],
       minutesLeftOnTimer: null,
       currentSong: null,
+      playingSong: false,
     };
-
-    // Use this to play audio
-    // var audio = new Audio('https://jamesbvaughan.com/song.mp3');
-    // audio.play();
   }
 
   componentWillUnmount() {
@@ -39,7 +35,17 @@ export default class HomePage extends React.PureComponent {
           activatedAppliances: data.activatedAppliances,
           minutesLeftOnTimer: data.minutesLeftOnTimer,
           currentSong: data.currentSong,
-        });
+        }, () => {
+              console.log(this.state.currentSong)
+              console.log(this.state.playingSong)
+
+              if (this.state.currentSong === "cooking audio" && !this.state.playingSong) {
+                let audio = new Audio('https://jamesbvaughan.com/song.mp3');
+                audio.play();
+                this.setState({playingSong: true});
+              }
+          }
+        );
       });
   }
 
