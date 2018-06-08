@@ -65,7 +65,7 @@ def handle_interpreted_speech(interpretation, data, post_data=post_data):
 def main():
     data = initial_data
 
-    for speech in continuously_listen(silence_len=.5):
+    for speech in continuously_listen(silence_len=0.5, length=0):
         print('Listening...')
         try:
             interpretation = speech.text().interpret()

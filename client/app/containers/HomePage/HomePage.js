@@ -21,10 +21,6 @@ export default class HomePage extends React.PureComponent {
       minutesLeftOnTimer: null,
       currentSong: null,
     };
-
-    // Use this to play audio
-    // var audio = new Audio('https://jamesbvaughan.com/song.mp3');
-    // audio.play();
   }
 
   componentWillUnmount() {
@@ -41,6 +37,13 @@ export default class HomePage extends React.PureComponent {
           currentSong: data.currentSong,
         });
       });
+
+    console.log(this.state.currentSong)
+    if (this.state.currentSong === "cooking audio") {
+      var audio = new Audio('https://jamesbvaughan.com/song.mp3');
+      audio.play();
+    } 
+
   }
 
   render() {
