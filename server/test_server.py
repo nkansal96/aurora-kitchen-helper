@@ -33,7 +33,7 @@ class ServerTest(TestCase):
         self.assertEqual(new_data['activatedAppliances'][0], 'electric spoon')
 
     @responses.activate
-    def test_handle_interpreted_speech(self):
+    def test_handle_interpreted_speech_with_song(self):
         interpretation = MagicMock(intent='play_song',
                                    entities={'song': 'Friday'})
         responses.add(responses.POST, 'http://localhost:3000/update-data')
@@ -41,3 +41,13 @@ class ServerTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         request_body = json.loads(responses.calls[0].request.body)
         self.assertEqual(request_body['currentSong'], 'Friday')
+
+    @responses.activate
+    def test_handle_interpreted_speech_with_timer(self):
+        interpretation = MagicMock(intent='set_timer',
+                                   entities={'duration': 'six minutes'})
+        responses.add(responses.POST, 'http://localhost:3000/update-data')
+        server.handle_interpreted_speech(interpretation, self.data)
+        self.assertEqual(len(responses.calls), 1)
+        request_body = json.loads(responses.calls[0].request.body)
+        self.assertEqual(request_body['minutesLeftOnTimer'], 6)
