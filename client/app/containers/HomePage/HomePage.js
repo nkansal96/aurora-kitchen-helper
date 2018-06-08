@@ -4,70 +4,84 @@
  * This is the first thing users see of our App, at the '/' route
  */
 
-import React from "react";
-import PropTypes from "prop-types";
-import { Helmet } from "react-helmet";
-import "./style.scss";
+import React from 'react';
+// import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 export default class HomePage extends React.PureComponent {
   // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
-    this.state = { time: Date.now() };
-  }
 
-  componentDidMount() {
-    this.interval = setInterval(() => this.setState({ time: Date.now() }), 100);
-    
-    // Use this to play audio 
+    this.fetchJSON = this.fetchJSON.bind(this);
+
+    this.state = {
+      intervalId: setInterval(this.fetchJSON, 1000),
+      activatedAppliances: [],
+      minutesLeftOnTimer: null,
+      currentSong: null,
+    };
+
+    // Use this to play audio
     // var audio = new Audio('https://jamesbvaughan.com/song.mp3');
     // audio.play();
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    clearInterval(this.state.intervalId);
+  }
+
+  fetchJSON() {
+    fetch('/data')
+      .then(res => res.json())
+      .then((data) => {
+        this.setState({
+          activatedAppliances: data.activatedAppliances,
+          minutesLeftOnTimer: data.minutesLeftOnTimer,
+          currentSong: data.currentSong,
+        });
+      });
   }
 
   render() {
-    const { loading, error, repos } = this.props;
-    const reposListProps = {
-      loading,
-      error,
-      repos
-    };
-
     return (
       <article>
         <Helmet>
           <title>Home Page</title>
           <meta name="description" content="Kitchen Helper App" />
         </Helmet>
-        <div className="home-page">
-          <section className="centered">
-            <h1>Kitchen Helper App</h1>
+        <div>
+          <section className="card mt-1">
+            <div className="card-body">
+              <h3 className="card-title">Timer</h3>
+              <p className="card-text">
+                {this.state.minutesLeftOnTimer
+                  ? `${this.state.minutesLeftOnTimer} Minutes Remaining`
+                  : 'No timer currently set.'
+                }
+              </p>
+            </div>
           </section>
-          <div> {this.state.time} </div>
-          <section className="inner-section">
-            <h2>Timer</h2>
-            <p>
-              Chicken &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
-              &emsp; &emsp; &emsp; &emsp; 10:43 Remaining
-            </p>
-            <p>
-              Veggies &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
-              &emsp; &emsp; &emsp; &emsp; 5:12 Remaining
-            </p>
+          <section className="card mt-4">
+            <div className="card-body">
+              <h3 className="card-title">Audio</h3>
+              <p className="card-text">
+                {this.state.currentSong
+                  ? `Now Playing: ${this.state.currentSong}`
+                  : 'No song currently playing.'
+                }
+              </p>
+            </div>
           </section>
-          <section className="inner-section">
-            <h2>Audio</h2>
-            <p> Now Playing: Cooking with Winter Vegatbles</p>
-          </section>
-          <section className="inner-section">
-            <h2>Appliances</h2>
-            <p>
-              Oven &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;
-              &emsp; &emsp; &emsp; &emsp; On
-            </p>
+          <section className="card mt-4">
+            <div className="card-body">
+              <h3 className="card-title">Active Appliances</h3>
+              <div className="card-text">
+                {this.state.activatedAppliances.map(appliance =>
+                  <div key={appliance}>{appliance}</div>
+                )}
+              </div>
+            </div>
           </section>
         </div>
       </article>
@@ -76,6 +90,4 @@ export default class HomePage extends React.PureComponent {
 }
 
 HomePage.propTypes = {
-  loading: PropTypes.bool,
-  error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool])
 };

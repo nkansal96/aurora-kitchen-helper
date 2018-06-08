@@ -1,16 +1,10 @@
-import React from "react";
-
-import "./style.scss";
+import React from 'react';
 
 const Footer = () => (
-  <footer>
-    <section>
-      Made with{" "}
-      <span role="img" aria-label="heart-emoji">
-        ❤️
-      </span>
-      From Dr. Eggman's A Team
-    </section>
+  <footer className="mt-4">
+    Made with
+    <span role="img" aria-label="heart">&nbsp;❤️&nbsp;</span>
+    by Dr. Eggman&#39;s A Team
   </footer>
 );
 

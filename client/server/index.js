@@ -1,30 +1,42 @@
 /* eslint consistent-return:0 */
 
 const express = require('express');
-const logger = require('./util//logger');
+const logger = require('./util/logger');
+const bodyParser = require('body-parser');
 
-const argv = require('./util/argv');
-const port = require('./util//port');
 const setup = require('./middlewares/frontendMiddleware');
 const { resolve } = require('path');
 
 const app = express();
 
+app.use(bodyParser.json());
 
-// In production we need to pass these values in instead of relying on webpack
+const state = {
+  activatedAppliances: [],
+  minutesLeftOnTimer: null,
+  currentSong: null,
+};
+
+app.post('/update-data', (req, res) => {
+  state.data = req.body;
+  res.end();
+});
+
+app.get('/data', (req, res) => {
+  res.json(state.data);
+});
+
 setup(app, {
   outputPath: resolve(process.cwd(), 'build'),
   publicPath: '/',
 });
 
-// get the intended host and port number, use localhost and port 3000 if not provided
-const customHost = argv.host || process.env.HOST;
-const host = customHost || null; // Let http.Server use its default IPv6/4 host
-const prettyHost = customHost || 'localhost';
+const host = process.env.HOST || 'localhost';
+const port = process.env.PORT || '3000';
 
 app.listen(port, host, (err) => {
   if (err) {
     return logger.error(err.message);
   }
-  logger.appStarted(port, prettyHost);
+  logger.appStarted(port, host);
 });

@@ -1,19 +1,41 @@
 # aurora-kitchen-helper
+
 A voice-enabled assistant for the kitchen, implemented with Aurora
 
-## To Run Client:
+## Design
 
-cd client
+This Proof-of-Concept app is split into two main parts:
 
-npm install
+- A small python service that interacts with the Aurora API
+- A web app that provides a dashboard for a user in the kitchen
 
-npm start
+## Usage
 
-## To Run Server:
+Both the python service and the web app must be running in order to use
+the app.
 
-cd server
+#### Web App
 
-pip install -Ur requirments.txt
+1. `$ cd client`
+2. `$ npm install`
+3. `$ npm start`
 
-python3 server.py
+## Python Service
 
+1. `$ cd server`
+2. `$ pip install -Ur requirments.txt`
+3. `$ python server.py`
+
+## Testing
+
+#### Web App
+
+```bash
+$ npm run test
+```
+
+#### Python Service
+
+```bash
+$ python -m unittest test_server
+```
